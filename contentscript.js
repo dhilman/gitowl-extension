@@ -1,21 +1,24 @@
 
-console.log("content script loaded")
+const StorageKey = {
+  drawerWidth: "drawerWidth",
+  drawerIsOpen: "drawerIsOpen"
+}
 
 const Config = {
   baseURL: "https://gitapp.dhilman.com/",
   drawerWidth() {
-    return localStorage.getItem("owl-drawerWidth") || "300px"
+    return localStorage.getItem(StorageKey.drawerWidth) || "300px"
   },
   setDrawerWidth(width) {
-    localStorage.setItem("owl-drawerWidth", width)
+    localStorage.setItem(StorageKey.drawerWidth, width)
   },
   drawerIsOpen() {
-    const isOpen = localStorage.getItem("owl-drawerIsOpen")
+    const isOpen = localStorage.getItem(StorageKey.drawerIsOpen)
     if (isOpen) return isOpen === "true"
     return true
   },
   setDrawerIsOpen(isOpen) {
-    localStorage.setItem("owl-drawerIsOpen", isOpen)
+    localStorage.setItem(StorageKey.drawerIsOpen, isOpen)
   }
 }
 
@@ -27,7 +30,6 @@ if (!window.ghAnalytics && window.location.href.includes("github.com")) {
 }
 
 function run() {
-  console.log("RUNNING")
   const components = createComponents()
 
   components.button.onclick = () => {

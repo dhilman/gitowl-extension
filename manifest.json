@@ -1,0 +1,13 @@
+{
+  "name": "Embed external site",
+  "version": "1",
+  "manifest_version": 2,
+  "content_scripts": [{
+      "js": ["contentscript.js"],
+      "matches": ["*://*/*"],
+      "all_frames": true
+  }],
+  "web_accessible_resources": [
+      "frame.html"
+  ]
+}
