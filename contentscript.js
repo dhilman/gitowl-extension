@@ -5,7 +5,7 @@ const StorageKey = {
 }
 
 const Config = {
-  baseURL: "https://gitapp.dhilman.com/",
+  baseURL: "https://gitowl.dev/",
   drawerWidth() {
     return localStorage.getItem(StorageKey.drawerWidth) || "300px"
   },
@@ -13,6 +13,7 @@ const Config = {
     localStorage.setItem(StorageKey.drawerWidth, width)
   },
   drawerIsOpen() {
+    if (!getOwnerRepoString()) return false
     const isOpen = localStorage.getItem(StorageKey.drawerIsOpen)
     if (isOpen) return isOpen === "true"
     return true
@@ -84,6 +85,7 @@ function createButton() {
   /** @type {CSSStyleDeclaration} */
   const styles = {
     position: "fixed",
+    zIndex: 200,
     top: "10%",
     right: Config.drawerIsOpen() ? Config.drawerWidth() : "0",
     padding: "0.5rem",
@@ -194,6 +196,9 @@ function getOwnerRepoString() {
   const path = location.pathname
   const split = path.split("/")
   if (split.length < 3) {
+    return ""
+  }
+  if (split[1] === "topic") {
     return ""
   }
   return split[1] + "/" + split[2]
