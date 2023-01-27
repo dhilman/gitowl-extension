@@ -1,13 +1,9 @@
 {
-  "name": "Embed external site",
-  "version": "1",
-  "manifest_version": 2,
+  "name": "GitOwl",
+  "version": "0.1",
+  "manifest_version": 3,
   "content_scripts": [{
       "js": ["contentscript.js"],
-      "matches": ["*://*/*"],
-      "all_frames": true
-  }],
-  "web_accessible_resources": [
-      "frame.html"
-  ]
+      "matches": ["https://github.com/*"]
+  }]
 }
