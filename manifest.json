@@ -4,6 +4,7 @@
   "manifest_version": 3,
   "content_scripts": [{
       "js": ["contentscript.js"],
+      "css": ["styles.css"],
       "matches": ["https://github.com/*"]
   }]
 }

@@ -6,8 +6,9 @@ const StorageKey = {
 
 const Config = {
   baseURL: "https://gitowl.dev/",
+  minDrawerWidth: 350,
   drawerWidth() {
-    return localStorage.getItem(StorageKey.drawerWidth) || "300px"
+    return localStorage.getItem(StorageKey.drawerWidth) || Config.minDrawerWidth + "px"
   },
   setDrawerWidth(width) {
     localStorage.setItem(StorageKey.drawerWidth, width)
@@ -33,29 +34,34 @@ if (!window.ghAnalytics && window.location.href.includes("github.com")) {
 function run() {
   const components = createComponents()
 
+  const root = document.querySelector(":root")
+
+  if (Config.drawerIsOpen()) {
+    root.style.setProperty("--owl-drawer-width", Config.drawerWidth())
+  }
+
   components.button.onclick = () => {
-    const isOpening = components.drawer.style.display === "none"
-    components.drawer.style.display = isOpening ? "block" : "none"
-    components.button.style.right = isOpening ? components.drawer.style.width : "0"
+    const curValue = root.style.getPropertyValue("--owl-drawer-width")
+    const isOpening = curValue === "0px" || curValue === ""
+    root.style.setProperty("--owl-drawer-width", isOpening ? Config.drawerWidth() : "0px")
     Config.setDrawerIsOpen(isOpening)
   }
 
   const onMouseMove = (event) => {
-    const width = `${document.body.clientWidth - event.clientX}px`
-    components.drawer.style.width = width
-    components.button.style.right = width
-    Config.setDrawerWidth(width)
+    const width = document.body.clientWidth - event.clientX
+    if (width < Config.minDrawerWidth) return
+    const widthPx = `${width}px`
+    root.style.setProperty("--owl-drawer-width", widthPx)
+    Config.setDrawerWidth(widthPx)
   }
 
   components.drag.addEventListener("mousedown", () => {
-    components.drag.style.width = "100%"
-    components.drag.style.opacity = "0.1"
+    document.body.style.userSelect = "none"
     document.addEventListener("mousemove", onMouseMove)
   })
 
   document.addEventListener("mouseup", () => {
-    components.drag.style.width = "4px"
-    components.drag.style.opacity = "0.5"
+    document.body.style.userSelect = "auto"
     document.removeEventListener("mousemove", onMouseMove)
   })
 
@@ -82,41 +88,11 @@ function createComponents() {
 
 function createButton() {
   const b = document.createElement("button")
-  /** @type {CSSStyleDeclaration} */
-  const styles = {
-    position: "fixed",
-    zIndex: 200,
-    top: "10%",
-    right: Config.drawerIsOpen() ? Config.drawerWidth() : "0",
-    padding: "0.5rem",
-    border: "none",
-
-    borderTopLeftRadius: "0.375rem",
-    borderBottomLeftRadius: "0.375rem",
-
-    background: "dodgerblue",
-  }
-  Object.assign(b.style, styles)
-
-  b.onmouseover = () => {
-    b.style.background = "royalblue"
-  }
-  b.onmouseout = () => {
-    b.style.background = "dodgerblue"
-  }
+  b.classList.add("owl-button")
 
   const text = document.createElement("div")
   text.innerText = "Git Owl"
-  /** @type {CSSStyleDeclaration} */
-  const textStyles = {
-    color: "white",
-    writingMode: "tb",
-    transform: "rotate(180deg)",
-    fontWeight: "600",
-    fontSize: "1.1rem",
-  }
-  Object.assign(text.style, textStyles)
-
+  text.classList.add("owl-button-text")
   b.appendChild(text)
 
   return b
@@ -124,35 +100,13 @@ function createButton() {
 
 function createDrawer() {
   const div = document.createElement("div")
-  /** @type {CSSStyleDeclaration} */
-  const styles = {
-    position: "fixed",
-    display: Config.drawerIsOpen() ? "block" : "none",
-    top: "0",
-    right: "0",
-    width: Config.drawerWidth(),
-    height: "100%",
-    zIndex: 200,
-    boxShadow: "rgb(0 0 0 / 64%) 0px 10px 20px",
-  }
-  Object.assign(div.style, styles)
+  div.classList.add("owl-drawer")
   return div
 }
 
 function createDraggableWall() {
   const div = document.createElement("div")
-  /** @type {CSSStyleDeclaration} */
-  const styles = {
-    position: "fixed",
-    top: "0",
-    width: "4px",
-    opacity: "0.5",
-    height: "100%",
-    zIndex: 250,
-    backgroundColor: "gray",
-    cursor: "ew-resize",
-  }
-  Object.assign(div.style, styles)
+  div.classList.add("owl-draggable-wall")
   return div
 }
 
@@ -160,15 +114,7 @@ function createDraggableWall() {
 function createIframe() {
   const iframe = document.createElement("iframe")
   iframe.src = getIframeSrc()
-  /** @type {CSSStyleDeclaration} */
-  const styles = {
-    width: "100%",
-    height: "100%",
-    margin: "0",
-    padding: "0",
-    border: "none",
-  }
-  Object.assign(iframe.style, styles)
+  iframe.classList.add("owl-iframe")
   return iframe
 }
 
