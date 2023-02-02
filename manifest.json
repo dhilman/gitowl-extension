@@ -5,6 +5,7 @@
   "content_scripts": [{
       "js": ["contentscript.js"],
       "css": ["styles.css"],
-      "matches": ["https://github.com/*"]
+      "matches": ["https://github.com/*"],
+      "all_frames": false
   }]
 }

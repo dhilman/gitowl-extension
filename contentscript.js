@@ -5,30 +5,40 @@ const StorageKey = {
 }
 
 const Config = {
-  baseURL: "https://gitowl.dev/",
+  baseURL: "https://staging.gitowl.dev/git/",
   minDrawerWidth: 350,
+  ignorePaths: ["settings", "pulls", "codespaces", "marketplace", "explore", "notifications", "topic"],
+  debug: true,
   drawerWidth() {
-    return localStorage.getItem(StorageKey.drawerWidth) || Config.minDrawerWidth + "px"
+    const w = localStorage.getItem(StorageKey.drawerWidth) || Config.minDrawerWidth + "px"
+    log("retrieved drawer width", w)
+    return w
   },
   setDrawerWidth(width) {
     localStorage.setItem(StorageKey.drawerWidth, width)
+    log("set drawer width", width)
   },
   drawerIsOpen() {
-    if (!getOwnerRepoString()) return false
+    if (!getCurrentBasePath()) return false
     const isOpen = localStorage.getItem(StorageKey.drawerIsOpen)
     if (isOpen) return isOpen === "true"
     return true
   },
   setDrawerIsOpen(isOpen) {
     localStorage.setItem(StorageKey.drawerIsOpen, isOpen)
+    log("set drawer is open", isOpen)
   }
+}
+
+function log (...args) {
+  if (Config.debug) { console.log(...args) }
 }
 
 if (!window.ghAnalytics && window.location.href.includes("github.com")) {
   window.ghAnalytics = {}
   run()
 } else {
-  console.log("content script already loaded")
+  log("content script already loaded")
 }
 
 function run() {
@@ -66,10 +76,15 @@ function run() {
   })
 
   listenToPathChange((path) => {
-    components.iframe.src = getIframeSrc()
+    log("path changed", path)
+    components.drawer.removeChild(components.iframe)
+    components.iframe = createIframe()
+    components.drawer.prepend(components.iframe)
+    if (Config.drawerIsOpen()) {
+      root.style.setProperty("--owl-drawer-width", Config.drawerWidth())
+    }
   })
 }
-
 
 function createComponents() {
   const button = createButton()
@@ -114,14 +129,15 @@ function createDraggableWall() {
 function createIframe() {
   const iframe = document.createElement("iframe")
   iframe.src = getIframeSrc()
+  log("created iframe with src", iframe.src)
   iframe.classList.add("owl-iframe")
   return iframe
 }
 
 function listenToPathChange(callback) {
-  let currentPath = getOwnerRepoString()
+  let currentPath = getCurrentBasePath()
   const observer = new MutationObserver(() => {
-    const newPath = getOwnerRepoString()
+    const newPath = getCurrentBasePath()
     if (newPath !== "" && newPath !== currentPath) {
       currentPath = newPath
       callback(currentPath)
@@ -131,21 +147,28 @@ function listenToPathChange(callback) {
 }
 
 function getIframeSrc() {
-  const ownerRepo = getOwnerRepoString()
-  if (ownerRepo === "") {
+  const path = getCurrentBasePath()
+  if (path === "") {
     return Config.baseURL
   }
-  return Config.baseURL + "?url=" + ownerRepo
+  return Config.baseURL + path
 }
 
-function getOwnerRepoString() {
+function getCurrentBasePath() {
   const path = location.pathname
+  // path -> split
+  // /owner/repo -> ["", "owner", "repo"]
+  // /owner -> ["", "owner"]
+  // /owner/repo/pulls -> ["", "owner", "repo", "pulls"]
   const split = path.split("/")
-  if (split.length < 3) {
+  if (split.length < 1) {
     return ""
   }
-  if (split[1] === "topic") {
+  if (Config.ignorePaths.includes(split[1])) {
     return ""
+  }
+  if (split.length === 2) {
+    return split[1]
   }
   return split[1] + "/" + split[2]
 }
