@@ -1,7 +1,13 @@
 {
-  "name": "GitOwl",
+  "name": "Git Owl",
   "version": "0.1",
   "manifest_version": 3,
+  "description": "GitHub analytics, with insights on repository and user activity.",
+  "icons": {
+    "16": "16x16.png",
+    "48": "48x48.png",
+    "128": "128x128.png"
+  },
   "content_scripts": [{
       "js": ["contentscript.js"],
       "css": ["styles.css"],

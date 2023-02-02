@@ -5,9 +5,10 @@ const StorageKey = {
 }
 
 const Config = {
+  version: chrome.runtime.getManifest().version,
   baseURL: "https://staging.gitowl.dev/git/",
   minDrawerWidth: 350,
-  ignorePaths: ["settings", "pulls", "codespaces", "marketplace", "explore", "notifications", "topic"],
+  ignorePaths: ["settings", "pulls", "codespaces", "marketplace", "explore", "notifications", "topic", "login"],
   debug: true,
   drawerWidth() {
     const w = localStorage.getItem(StorageKey.drawerWidth) || Config.minDrawerWidth + "px"
@@ -151,7 +152,7 @@ function getIframeSrc() {
   if (path === "") {
     return Config.baseURL
   }
-  return Config.baseURL + path
+  return Config.baseURL + path + "?v=" + Config.version
 }
 
 function getCurrentBasePath() {
