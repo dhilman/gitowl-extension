@@ -45,8 +45,6 @@ if (!window.ghAnalytics && window.location.href.includes("github.com")) {
 function run() {
   const components = createComponents()
 
-  const root = document.querySelector(":root")
-
   componentOpenCloseSetup(components)
 
   components.button.onclick = () => {
@@ -57,7 +55,7 @@ function run() {
     const width = document.body.clientWidth - event.clientX
     if (width < Config.minDrawerWidth) return
     const widthPx = `${width}px`
-    root.style.setProperty("--owl-drawer-width", widthPx)
+    components.drawer.style.width = widthPx
     Config.setDrawerWidth(widthPx)
   }
 
@@ -76,19 +74,16 @@ function run() {
     components.drawer.removeChild(components.iframe)
     components.iframe = createIframe()
     components.drawer.prepend(components.iframe)
-    // if (Config.drawerIsOpen()) {
-    //   components.drawer.classList.add("owl-slide-in")
-    // } else {
-    //   components.drawer.classList.add("owl-slide-out")
-    // }
   })
 }
 
 function componentsOpenCloseToggle(components) {
-  if (components.button.classList.contains("owl-slide-in")) {
+  if (Config.drawerIsOpen()) {
     closeDrawer(components)
+    Config.setDrawerIsOpen(false)
   } else {
     openDrawer(components)
+    Config.setDrawerIsOpen(true)
   }
 }
 
@@ -101,24 +96,21 @@ function componentOpenCloseSetup(components) {
 }
 
 function openDrawer(components) {
-  components.button.classList.add("owl-slide-in")
-  components.button.classList.remove("owl-slide-out")
-  components.drawer.classList.add("owl-slide-in")
-  components.drawer.classList.remove("owl-slide-out")
+  components.drawer.classList.remove("owl-translate-x-0")
+  components.drawer.classList.add("owl-translate-x-full")
 }
 
 function closeDrawer(components) {
-  components.button.classList.remove("owl-slide-in")
-  components.button.classList.add("owl-slide-out")
-  components.drawer.classList.remove("owl-slide-in")
-  components.drawer.classList.add("owl-slide-out")
+  components.drawer.classList.remove("owl-translate-x-full")
+  components.drawer.classList.add("owl-translate-x-0")
 }
 
 function createComponents() {
-  const button = createButton()
-  document.body.appendChild(button)
-
   const drawer = createDrawer()
+
+  const button = createButton()
+  drawer.appendChild(button)
+
   const iframe = createIframe()
   drawer.appendChild(iframe)
 
@@ -143,7 +135,7 @@ function createButton() {
 
 function createDrawer() {
   const div = document.createElement("div")
-  div.style.setProperty("--owl-drawer-width", Config.drawerWidth())
+  div.style.width = Config.drawerWidth()
   div.classList.add("owl-drawer")
   return div
 }
