@@ -47,15 +47,10 @@ function run() {
 
   const root = document.querySelector(":root")
 
-  if (Config.drawerIsOpen()) {
-    root.style.setProperty("--owl-drawer-width", Config.drawerWidth())
-  }
+  componentOpenCloseSetup(components)
 
   components.button.onclick = () => {
-    const curValue = root.style.getPropertyValue("--owl-drawer-width")
-    const isOpening = curValue === "0px" || curValue === ""
-    root.style.setProperty("--owl-drawer-width", isOpening ? Config.drawerWidth() : "0px")
-    Config.setDrawerIsOpen(isOpening)
+    componentsOpenCloseToggle(components)
   }
 
   const onMouseMove = (event) => {
@@ -81,10 +76,42 @@ function run() {
     components.drawer.removeChild(components.iframe)
     components.iframe = createIframe()
     components.drawer.prepend(components.iframe)
-    if (Config.drawerIsOpen()) {
-      root.style.setProperty("--owl-drawer-width", Config.drawerWidth())
-    }
+    // if (Config.drawerIsOpen()) {
+    //   components.drawer.classList.add("owl-slide-in")
+    // } else {
+    //   components.drawer.classList.add("owl-slide-out")
+    // }
   })
+}
+
+function componentsOpenCloseToggle(components) {
+  if (components.button.classList.contains("owl-slide-in")) {
+    closeDrawer(components)
+  } else {
+    openDrawer(components)
+  }
+}
+
+function componentOpenCloseSetup(components) {
+  if (Config.drawerIsOpen()) {
+    openDrawer(components)
+  } else {
+    closeDrawer(components)
+  }
+}
+
+function openDrawer(components) {
+  components.button.classList.add("owl-slide-in")
+  components.button.classList.remove("owl-slide-out")
+  components.drawer.classList.add("owl-slide-in")
+  components.drawer.classList.remove("owl-slide-out")
+}
+
+function closeDrawer(components) {
+  components.button.classList.remove("owl-slide-in")
+  components.button.classList.add("owl-slide-out")
+  components.drawer.classList.remove("owl-slide-in")
+  components.drawer.classList.add("owl-slide-out")
 }
 
 function createComponents() {
@@ -116,6 +143,7 @@ function createButton() {
 
 function createDrawer() {
   const div = document.createElement("div")
+  div.style.setProperty("--owl-drawer-width", Config.drawerWidth())
   div.classList.add("owl-drawer")
   return div
 }
