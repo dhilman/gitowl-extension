@@ -11,7 +11,7 @@
   "content_scripts": [{
       "js": ["contentscript.js"],
       "css": ["styles.css"],
-      "matches": ["https://github.com/*"],
+      "matches": ["https://github.com/*", "https://www.npmjs.com/*", "https://pypi.org/*"],
       "all_frames": false
   }]
 }

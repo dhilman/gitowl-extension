@@ -35,11 +35,21 @@ function log (...args) {
   if (Config.debug) { console.log(...args) }
 }
 
-if (!window.ghAnalytics && window.location.href.includes("github.com")) {
+if (shouldRun()) {
   window.ghAnalytics = {}
   run()
 } else {
   log("content script already loaded")
+}
+
+
+function shouldRun() {
+  if (window.ghAnalytics) return false
+  href = window.location.href
+  if (href.includes("github.com")) return true
+  if (href.includes("npmjs.com")) return true
+  if (href.includes("pypi.org")) return true
+  return false
 }
 
 function run() {
@@ -176,7 +186,23 @@ function getIframeSrc() {
 }
 
 function getCurrentBasePath() {
-  const path = location.pathname
+  let path = ""
+  if (location.hostname === "github.com") {
+    path = location.pathname
+  } else if (location.hostname === "www.npmjs.com") {
+    const repoLinkElement = document.querySelector('[aria-labelledby*="repository-link"]')
+    if (!repoLinkElement) return ""
+    if (!repoLinkElement.href) return ""
+    path = new URL(repoLinkElement.href).pathname
+  } else if (location.hostname === "pypi.org") {
+    const repoLinkElementChild = document.querySelector(".fa-github")
+    if (!repoLinkElementChild) return ""
+    const repoLinkElement = repoLinkElementChild.parentElement
+    if (!repoLinkElement) return ""
+    if (!repoLinkElement.href) return ""
+    path = new URL(repoLinkElement.href).pathname
+  }
+
   // path -> split
   // /owner/repo -> ["", "owner", "repo"]
   // /owner -> ["", "owner"]
