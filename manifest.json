@@ -13,5 +13,7 @@
       "css": ["styles.css"],
       "matches": ["https://github.com/*", "https://www.npmjs.com/*", "https://pypi.org/*"],
       "all_frames": false
-  }]
+  }],
+
+  "homepage_url": "https://gitowl.dev"
 }

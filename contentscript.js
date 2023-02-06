@@ -1,13 +1,14 @@
 
 const StorageKey = {
-  drawerWidth: "drawerWidth",
-  drawerIsOpen: "drawerIsOpen"
+  drawerWidth: "git-owl-width",
+  drawerIsOpen: "git-owl-is-open"
 }
 
 const Config = {
   version: chrome.runtime.getManifest().version,
-  baseURL: "https://staging.gitowl.dev/git/",
+  baseURL: "https://gitowl.dev/git/",
   minDrawerWidth: 350,
+  websites: ["github.com", "npmjs.com", "pypi.org"],
   ignorePaths: ["settings", "pulls", "codespaces", "marketplace", "explore", "notifications", "topic", "login"],
   debug: true,
   drawerWidth() {
@@ -46,9 +47,9 @@ if (shouldRun()) {
 function shouldRun() {
   if (window.ghAnalytics) return false
   href = window.location.href
-  if (href.includes("github.com")) return true
-  if (href.includes("npmjs.com")) return true
-  if (href.includes("pypi.org")) return true
+  for (const website of Config.websites) {
+    if (href.includes(website)) return true
+  }
   return false
 }
 
