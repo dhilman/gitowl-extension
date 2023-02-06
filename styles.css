@@ -6,12 +6,13 @@
   left: 0;
   padding: 0.5rem;
   border: none;
+  border-top-right-radius: 0.375rem;
   border-top-left-radius: 0.375rem;
-  border-bottom-left-radius: 0.375rem;
 
   background-color: #9333ea; /* purple-600 */
 
-  transform: translateX(-100%);
+  transform-origin: bottom right;
+  transform: translateX(-100%) rotate(-90deg);
 }
 
 .owl-button:hover {
@@ -20,8 +21,6 @@
 
 .owl-button-text {
   color: white;
-  writing-mode: tb;
-  transform: rotate(180deg);
   font-weight: 600;
   font-size: 1.1rem;
 }
