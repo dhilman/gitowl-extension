@@ -8,12 +8,19 @@
     "48": "48x48.png",
     "128": "128x128.png"
   },
+
   "content_scripts": [{
-      "js": ["contentscript.js"],
-      "css": ["styles.css"],
-      "matches": ["https://github.com/*", "https://www.npmjs.com/*", "https://pypi.org/*"],
-      "all_frames": false
+    "js": ["contentscript.js"],
+    "matches": ["https://github.com/*", "https://www.npmjs.com/*", "https://pypi.org/*"],
+    "all_frames": false
   }],
+
+  "web_accessible_resources": [
+    {
+      "resources": ["frame.html", "framescript.js"],
+      "matches": ["https://github.com/*", "https://www.npmjs.com/*", "https://pypi.org/*"]
+    }
+  ],
 
   "homepage_url": "https://gitowl.dev"
 }
