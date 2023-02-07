@@ -31,10 +31,9 @@
   background-color: white;
 
   border-bottom: none;
-  border-color: rgb(0, 0, 0, 0.1);
-  border-right: 2px solid;
-  border-left: 2px solid;
-  border-top: 2px solid;
+  border-right: 2px solid rgb(0, 0, 0, 0.1);
+  border-left: 2px solid rgb(0, 0, 0, 0.1);
+  border-top: 2px solid rgb(0, 0, 0, 0.1);
   border-top-right-radius: 0.375rem;
   border-top-left-radius: 0.375rem;
 
