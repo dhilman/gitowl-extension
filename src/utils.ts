@@ -7,13 +7,15 @@ function getFrameBaseSrc() {
   return chrome.runtime.getURL("frame.html")
 }
 
+const manifest = chrome.runtime.getManifest()
+
 export const Config = {
   minDrawerWidth: 300,
-  version: chrome.runtime.getManifest().version,
+  version: manifest.version,
   frameBaseSrc: getFrameBaseSrc(),
   websites: ["github.com", "npmjs.com", "pypi.org"],
   ignorePaths: ["settings", "pulls", "codespaces", "marketplace", "explore", "notifications", "topic", "login"],
-  debug: true,
+  debug: (manifest.update_url === undefined),
 }
 
 export function log(...args: any) {
@@ -47,7 +49,11 @@ export function setDrawerIsOpen(isOpen: boolean) {
 
 const WebsitePathFinder = {
   github: () => {
-    return location.pathname
+    const path = location.pathname
+    for (const ignorePath of Config.ignorePaths) {
+      if (path.startsWith(`/${ignorePath}`)) return ""
+    }
+    return path
   },
   npmjs: () => {
     const repoLinkElement = document.querySelector('[aria-labelledby*="repository-link"]')

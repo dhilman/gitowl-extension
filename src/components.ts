@@ -43,12 +43,11 @@ export default class Components {
 
     this.wall.addEventListener("mousedown", () => {
       document.body.style.userSelect = "none !important";
-      document.body.addEventListener("mousemove", onMouseMove);
-    })
-
-    document.body.addEventListener("mouseup", () => {
-      document.body.style.userSelect = "";
-      document.body.removeEventListener("mousemove", onMouseMove);
+      document.addEventListener("mousemove", onMouseMove);
+      document.addEventListener("mouseup", () => {
+        document.body.style.userSelect = "";
+        document.removeEventListener("mousemove", onMouseMove);
+      }, {once: true})
     })
 
     listenToPathChange(() => {

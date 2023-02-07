@@ -1,5 +1,5 @@
 
-const baseURL = "https://staging.gitowl.dev/git"
+const baseURL = "https://gitowl.dev/git"
 
 const urlSearchParams = new URLSearchParams(window.location.search)
 const encodedPath = urlSearchParams.get("path")
