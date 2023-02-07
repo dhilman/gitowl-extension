@@ -83,9 +83,9 @@ function getHrefFromParent(query: string) {
 
 export function getFrameSrc() {
   const path = getCurrentPath()
-  if (!path) return Config.frameBaseSrc
-  const b64 = btoa(path)
-  return `${Config.frameBaseSrc}?path=${b64}&v=${Config.version}`
+  const pathWithVersionQuery = `${path}?v=${Config.version}`
+  const b64 = btoa(pathWithVersionQuery)
+  return `${Config.frameBaseSrc}?path=${b64}`
 }
 
 export function listenToPathChange(callback: () => void) {
