@@ -84,12 +84,7 @@ export default class Components {
   _createButton() {
     const el = document.createElement('button');
     el.classList.add('owl-button');
-
-    const text = document.createElement("span");
-    text.classList.add('owl-button-text');
-    text.innerText = "Git Owl";
-    el.appendChild(text);
-
+    el.innerText = "Git Owl";
     this.button = el;
   }
 
