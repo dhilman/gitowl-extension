@@ -42,10 +42,11 @@ export default class Components {
     const onMouseMove = this.onMouseMove.bind(this);
 
     this.wall.addEventListener("mousedown", () => {
-      document.body.style.userSelect = "none !important";
+      const defaultUserSelect = document.body.style.userSelect;
+      document.body.style.userSelect = "none";
       document.addEventListener("mousemove", onMouseMove);
       document.addEventListener("mouseup", () => {
-        document.body.style.userSelect = "";
+        document.body.style.userSelect = defaultUserSelect;
         document.removeEventListener("mousemove", onMouseMove);
       }, {once: true})
     })
