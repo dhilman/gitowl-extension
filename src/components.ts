@@ -48,11 +48,11 @@ export default class Components {
       document.addEventListener("mouseup", () => {
         document.body.style.userSelect = defaultUserSelect;
         document.removeEventListener("mousemove", onMouseMove);
-      }, {once: true})
+      }, { once: true })
     })
 
     listenToPathChange(() => {
-      this.frame.src = getFrameSrc();
+      this.frame.contentWindow.location.replace(getFrameSrc());
     })
 
   }
