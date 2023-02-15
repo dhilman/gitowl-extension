@@ -1,6 +1,6 @@
 {
   "name": "Git Owl",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "manifest_version": 3,
   "description": "Open Source analytics at a glance - insights on repository and user activity.",
   "icons": {
