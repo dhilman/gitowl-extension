@@ -2,7 +2,8 @@ import "./styles.css";
 import {
   Config,
   drawerIsOpen,
-  drawerWidth, getFrameSrc,
+  drawerWidth,
+  getCurrentPath,
   listenToPathChange,
   setDrawerIsOpen,
   setDrawerWidth
@@ -34,7 +35,6 @@ export default class Components {
   }
 
   setup() {
-    drawerIsOpen() ? this.open() : this.close();
     document.body.appendChild(this.drawer);
 
     this.button.addEventListener("click", () => this.openToggle());
@@ -52,7 +52,7 @@ export default class Components {
     })
 
     listenToPathChange(() => {
-      this.frame.contentWindow.location.replace(getFrameSrc());
+      this.frame.contentWindow.location.replace(this.createFrameSrc());
     })
 
   }
@@ -67,11 +67,16 @@ export default class Components {
     setDrawerIsOpen(true);
   }
 
+  sendMessage(message: string) {
+    chrome.runtime.sendMessage( message );
+  }
+
   isOpen() {
     return this.drawer.classList.contains("owl-translate-x-0");
   }
 
   open() {
+    this.sendMessage("gitowl-open")
     this.drawer.classList.remove("owl-translate-x-full");
     this.drawer.classList.add("owl-translate-x-0");
   }
@@ -94,6 +99,8 @@ export default class Components {
     el.style.width = drawerWidth();
 
     this.drawer = el;
+
+    drawerIsOpen() ? this.open() : this.close();
   }
 
   _createWall() {
@@ -106,9 +113,23 @@ export default class Components {
   _createFrame() {
     const el = document.createElement('iframe');
     el.classList.add('owl-iframe');
-    el.src = getFrameSrc()
+    el.src = this.createFrameSrc();
 
     this.frame = el;
+  }
+
+  /**
+   * Creates the src for iframe, query param `path` is the base64 encoded path/suffix
+   * to be appended to the base GitOwl URL by frame script.
+   *
+   * Query param `closed` is used to indicate whether the **initial** state of the drawer.
+   */
+  createFrameSrc() {
+    const closed = !this.isOpen()
+    const path = getCurrentPath()
+    const pathWithVersionQuery = `${path}?v=${Config.version}&closed=${closed}`
+    const b64 = btoa(pathWithVersionQuery)
+    return `${Config.frameBaseSrc}?path=${b64}`
   }
 
 }

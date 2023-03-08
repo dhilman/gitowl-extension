@@ -81,13 +81,6 @@ function getHrefFromParent(query: string) {
   return href
 }
 
-export function getFrameSrc() {
-  const path = getCurrentPath()
-  const pathWithVersionQuery = `${path}?v=${Config.version}`
-  const b64 = btoa(pathWithVersionQuery)
-  return `${Config.frameBaseSrc}?path=${b64}`
-}
-
 export function listenToPathChange(callback: () => void) {
   let currentPath = getCurrentPath()
   const observer = new MutationObserver(() => {
@@ -102,10 +95,10 @@ export function listenToPathChange(callback: () => void) {
 
 /**
  * Returns the path to the element of interest on the current website.
- * On github.com, this is the website path (user or repository).
- * On npmjs.com and pypi.org, finds the link to the repository and returns its path.
+ * On github.com, this is the URL path (user or repository).
+ * On npmjs.com and pypi.org, tries to find the link to the repository and returns its path.
  */
-function getCurrentPath(): string {
+export function getCurrentPath(): string {
   let path = ""
   if (location.hostname === "github.com") {
     path = WebsitePathFinder.github()

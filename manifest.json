@@ -1,8 +1,8 @@
 {
   "name": "GitOwl",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "manifest_version": 3,
-  "description": "Open Source Insights at a Glance.",
+  "description": "Open Source Insights At a Glance.",
   "icons": {
     "16": "favicon@16x16.png",
     "48": "favicon@48x48.png",
