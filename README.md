@@ -3,7 +3,7 @@
 <h3 align="center">
   <b><a href="https://gitowl.dev">gitowl.dev</a></b>
   <span> • </span>
-  <b><a href="https://google.com">chrome</a></b>
+  <b><a href="https://chrome.google.com/webstore/detail/gitowl/gijnkijpbdlefjnobncjfongkbpoohdb">chrome</a></b>
 </h3>
 
 ![Screenshot](screenshot.png)
