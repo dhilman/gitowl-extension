@@ -1,8 +1,9 @@
 {
-  "name": "GitOwl",
-  "version": "0.1.7",
+  "name": "GitOwl - Open Source Insights At a Glance",
+  "short_name": "GitOwl",
+  "version": "0.1.8",
   "manifest_version": 3,
-  "description": "Open Source Insights At a Glance.",
+  "description": "GitOwl provides a sidebar with contextual insights to help you navigate the world of open source.",
   "icons": {
     "16": "favicon@16x16.png",
     "48": "favicon@48x48.png",
