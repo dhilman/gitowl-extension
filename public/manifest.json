@@ -1,0 +1,37 @@
+{
+  "name": "GitOwl - Dev",
+  "short_name": "GitOwl (Dev)",
+  "version": "0.1.8",
+  "manifest_version": 3,
+  "description": "GitOwl provides a sidebar with contextual insights to help you navigate the world of open source.",
+  "icons": {
+    "128": "favicon@128x128.png"
+  },
+
+  "content_scripts": [
+    {
+      "js": ["src/content/index.js"],
+      "matches": [
+        "https://example.com/*",
+        "https://github.com/*",
+        "https://www.npmjs.com/*",
+        "https://pypi.org/*"
+      ],
+      "all_frames": false
+    }
+  ],
+
+  "web_accessible_resources": [
+    {
+      "resources": ["src/frame/index.js"],
+      "matches": [
+        "https://example.com/*",
+        "https://github.com/*",
+        "https://www.npmjs.com/*",
+        "https://pypi.org/*"
+      ]
+    }
+  ],
+
+  "homepage_url": "https://gitowl.dev"
+}
