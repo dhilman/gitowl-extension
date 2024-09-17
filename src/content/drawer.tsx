@@ -1,22 +1,11 @@
 import { CONFIG } from "@/content/config";
 import { GitOwlIframe } from "@/content/gitowl-iframe";
 import { LocalStorage } from "@/content/local-storage";
-import { useCallback, useState } from "preact/hooks";
+import { useCallback, useEffect, useState } from "preact/hooks";
 
 export default function Drawer() {
-  const [width, setWidth] = useState(() => {
-    return LocalStorage.getDrawerWidth();
-  });
-  const [isOpen, setIsOpen] = useState(() => {
-    return LocalStorage.getDrawerIsOpen();
-  });
-
-  const handleDrag = useCallback((e: MouseEvent) => {
-    const width = document.body.clientWidth - e.clientX;
-    if (width < CONFIG.MIN_DRAWER_WIDTH) return;
-    setWidth(width + "px");
-    LocalStorage.setDrawerWidth(width + "px");
-  }, []);
+  const { width, onMouseDown } = useDrawerWidth();
+  const { isOpen, onToggleOpen } = useDrawerIsOpen();
 
   return (
     <div
@@ -25,37 +14,60 @@ export default function Drawer() {
       }`}
       style={{ width }}
     >
-      <div
-        className="owl-draggable-wall"
-        onMouseDown={() => {
-          console.log("drawer wall mouse down");
-          const prevUserSelect = document.body.style.userSelect;
-          document.body.style.userSelect = "none";
-          document.addEventListener("mousemove", handleDrag);
-          document.addEventListener(
-            "mouseup",
-            () => {
-              console.log("drawer wall mouse up");
-              document.body.style.userSelect = prevUserSelect;
-              document.removeEventListener("mousemove", handleDrag);
-            },
-            { once: true }
-          );
-        }}
-      />
-      <button
-        className="owl-button"
-        onClick={() => {
-          setIsOpen(!isOpen);
-          LocalStorage.setDrawerIsOpen(!isOpen);
-          if (!isOpen) {
-            chrome.runtime.sendMessage("gitowl-open");
-          }
-        }}
-      >
+      <div className="owl-draggable-wall" onMouseDown={onMouseDown} />
+      <button className="owl-button" onClick={onToggleOpen}>
         GitOwl
       </button>
       <GitOwlIframe />
     </div>
   );
+}
+
+function useDrawerWidth() {
+  const [width, setWidth] = useState(() => {
+    return LocalStorage.getDrawerWidth();
+  });
+
+  useEffect(() => {
+    LocalStorage.setDrawerWidth(width + "px");
+  }, [width]);
+
+  const handleDrag = useCallback((e: MouseEvent) => {
+    const width = document.body.clientWidth - e.clientX;
+    if (width < CONFIG.MIN_DRAWER_WIDTH) return;
+    setWidth(width + "px");
+  }, []);
+
+  const onMouseDown = useCallback(() => {
+    const prevUserSelect = document.body.style.userSelect;
+    document.body.style.userSelect = "none";
+    document.addEventListener("mousemove", handleDrag);
+    document.addEventListener(
+      "mouseup",
+      () => {
+        console.log("drawer wall mouse up");
+        document.body.style.userSelect = prevUserSelect;
+        document.removeEventListener("mousemove", handleDrag);
+      },
+      { once: true }
+    );
+  }, [handleDrag]);
+
+  return { width, onMouseDown };
+}
+
+function useDrawerIsOpen() {
+  const [isOpen, setIsOpen] = useState(() => {
+    return LocalStorage.getDrawerIsOpen();
+  });
+
+  const onToggleOpen = () => {
+    setIsOpen(!isOpen);
+    LocalStorage.setDrawerIsOpen(!isOpen);
+    if (!isOpen) {
+      chrome.runtime.sendMessage("gitowl-open");
+    }
+  };
+
+  return { isOpen, onToggleOpen };
 }

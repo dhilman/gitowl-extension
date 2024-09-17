@@ -2,12 +2,17 @@ import { LocalStorage } from "@/content/local-storage";
 import { getCurrentPath } from "@/content/path-finder";
 import { useEffect, useState } from "preact/hooks";
 
+export function GitOwlIframe() {
+  const source = useIframeSrc();
+  return <iframe src={source} className="owl-iframe" />;
+}
+
 const current = {
   url: window.location.href,
   path: getCurrentPath(),
 };
 
-export function GitOwlIframe() {
+function useIframeSrc() {
   const [source, setSource] = useState(() => {
     return createIframeSrcWithQuery(current.path);
   });
@@ -28,7 +33,7 @@ export function GitOwlIframe() {
     return () => observer.disconnect();
   }, []);
 
-  return <iframe src={source} className="owl-iframe" />;
+  return source;
 }
 
 const FRAME_SRC = chrome.runtime.getURL("src/frame/index.html");
@@ -36,7 +41,6 @@ const VERSION = import.meta.env.VITE_GITOWL_VERSION;
 
 function createIframeSrcWithQuery(path: string) {
   const isClosed = !LocalStorage.getDrawerIsOpen();
-  // TODO: add version
   const pathWithQuery = `${path}?closed=${isClosed}&version=${VERSION}`;
   const b64 = btoa(pathWithQuery);
   return FRAME_SRC + "?path=" + b64;

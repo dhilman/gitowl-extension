@@ -1,3 +1,8 @@
+/**
+ * Returns the path to be used for the GitOwl iframe.
+ * Either the repository or user name.
+ * Uses different strategies to find the path based on the website.
+ */
 export function getCurrentPath() {
   if (location.hostname === "github.com") {
     return github();
