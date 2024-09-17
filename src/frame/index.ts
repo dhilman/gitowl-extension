@@ -1,10 +1,16 @@
-const baseUrl = import.meta.env.VITE_BASE_URL;
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
+function log(...args: any[]) {
+  if (import.meta.env.DEV) {
+    console.log(...args);
+  }
+}
 
 function getGitOwlUrl() {
   const params = new URLSearchParams(window.location.search);
   const encoded = params.get("path");
-  if (!encoded) return baseUrl + "/";
-  return baseUrl + atob(encoded);
+  if (!encoded) return BASE_URL + "/";
+  return BASE_URL + atob(encoded);
 }
 
 // Inject the iframe
@@ -21,9 +27,9 @@ document.body.appendChild(iframe);
 // Navigation within the iframe doesn't result in update of the iframe src, thus
 // once the iframe has been opened, will not update the src again, to avoid
 // resetting the iframe to its initial URL.
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message) => {
   if (message === "gitowl-open") {
-    console.log("message received opening");
+    log("message received opening");
     const url = new URL(iframe.src);
     if (!url.searchParams.has("closed")) {
       return;

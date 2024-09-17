@@ -1,6 +1,7 @@
 import { CONFIG } from "@/content/config";
 import { GitOwlIframe } from "@/content/gitowl-iframe";
 import { LocalStorage } from "@/content/local-storage";
+import { log } from "@/content/log";
 import { useCallback, useEffect, useState } from "preact/hooks";
 
 export default function Drawer() {
@@ -45,7 +46,7 @@ function useDrawerWidth() {
     document.addEventListener(
       "mouseup",
       () => {
-        console.log("drawer wall mouse up");
+        log("drawer wall mouse up");
         document.body.style.userSelect = prevUserSelect;
         document.removeEventListener("mousemove", handleDrag);
       },
