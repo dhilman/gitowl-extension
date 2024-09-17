@@ -2,12 +2,15 @@ import preact from "@preact/preset-vite";
 import { resolve } from "path";
 import { defineConfig } from "vite";
 import cssInjectedByJs from "vite-plugin-css-injected-by-js";
+import packageJson from "./package.json";
 
 const src = resolve(__dirname, "src");
 const outDir = resolve(__dirname, "dist");
 
-// https://vitejs.dev/config/
 export default defineConfig({
+  define: {
+    "import.meta.env.VITE_GITOWL_VERSION": JSON.stringify(packageJson.version),
+  },
   resolve: {
     alias: {
       "@": src,

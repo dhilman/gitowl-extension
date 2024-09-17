@@ -22,7 +22,7 @@
 .owl-button {
   position: fixed;
   z-index: 80; /* github hover cards are 100 */
-  top: 20%;
+  top: 10%;
 
   padding: 4px 14px;
 
@@ -35,9 +35,9 @@
   background-color: white;
 
   border-bottom: none;
-  border-right: 2px solid rgb(0, 0, 0, 0.1);
-  border-left: 2px solid rgb(0, 0, 0, 0.1);
-  border-top: 2px solid rgb(0, 0, 0, 0.1);
+  border-right: 2px solid rgb(0, 0, 0, 0.05);
+  border-left: 2px solid rgb(0, 0, 0, 0.05);
+  border-top: 2px solid rgb(0, 0, 0, 0.05);
   border-top-right-radius: 12px;
   border-top-left-radius: 12px;
 
