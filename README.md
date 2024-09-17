@@ -1,4 +1,7 @@
-## GitOwl Browser Extension
+
+<h1 align="center">
+  GitOwl Browser Extension
+</h1>
 
 <h3 align="center">
   <b><a href="https://gitowl.dev">gitowl.dev</a></b>
@@ -6,18 +9,17 @@
   <b><a href="https://chrome.google.com/webstore/detail/gitowl/gijnkijpbdlefjnobncjfongkbpoohdb">chrome</a></b>
 </h3>
 
-![Screenshot](screenshot.png)
+![Screenshot](./screenshots/main.png)
 
-This repository contains the source code for GitOwl browser extension.
+This repository contains the source code for the GitOwl browser extension.
 
 The extension aims to interact as little as possible with the websites on which it is run.
 
 The extension functionality is limited to:
-- Creating a drawer component to display GitOwl iframe in.
-- Identifying the entity (user/repository) being viewed.
-- Constructing URL for GitOwl iframe.
-- Creating a GitOwl iframe.
-- Controlling open/closed state of the drawer.
+- Creating a drawer component for the GitOwl iframe
+- Controlling the drawer state (width & open/closed)
+- Identifying the entity (user/repository) being viewed
+- Instantiating the GitOwl iframe
 
 The extension currently works on:
 - GitHub
