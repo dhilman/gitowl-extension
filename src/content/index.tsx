@@ -1,13 +1,19 @@
 import Drawer from "@/content/drawer";
 import { log } from "@/content/log";
 import { render } from "preact";
-import "./styles.css";
+import styles from "./styles.css?inline";
 
 function setup() {
   const appFrame = getOrCreateAppFrame();
 
   log("rendering app frame");
-  render(<Drawer />, appFrame);
+  render(
+    <>
+      <style>{styles}</style>
+      <Drawer />
+    </>,
+    appFrame
+  );
 }
 
 function getOrCreateAppFrame() {

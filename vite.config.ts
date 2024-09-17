@@ -1,7 +1,6 @@
 import preact from "@preact/preset-vite";
 import { resolve } from "path";
 import { defineConfig } from "vite";
-import cssInjectedByJs from "vite-plugin-css-injected-by-js";
 import packageJson from "./package.json";
 import makeManifest from "./scripts/make-manifest";
 
@@ -17,18 +16,7 @@ export default defineConfig({
       "@": src,
     },
   },
-  plugins: [
-    makeManifest(),
-    preact(),
-    cssInjectedByJs({
-      jsAssetsFilterFunction: (chunk) => {
-        if (chunk.name === "content") {
-          return true;
-        }
-        return false;
-      },
-    }),
-  ],
+  plugins: [makeManifest(), preact()],
   build: {
     outDir,
     rollupOptions: {

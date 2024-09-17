@@ -31,7 +31,6 @@ export default {
     {
       resources: ["src/frame/index.html", "src/frame/index.js"],
       matches: [
-        "https://example.com/*",
         "https://github.com/*",
         "https://www.npmjs.com/*",
         "https://pypi.org/*",
