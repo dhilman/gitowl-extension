@@ -9,12 +9,20 @@ export function getCurrentPath() {
   return "";
 }
 
+const GITHUB_IGNORE_PATHS = [
+  "/settings",
+  "/pulls",
+  "/codespaces",
+  "/marketplace",
+  "/explore",
+  "/notifications",
+  "/topic",
+  "/login",
+];
+
 function github() {
   const path = location.pathname;
-  // TODO: ignore paths
-  // for (const ignorePath of Config.ignorePaths) {
-  //   if (path.startsWith(`/${ignorePath}`)) return "";
-  // }
+  if (GITHUB_IGNORE_PATHS.some(path.startsWith)) return "";
   return path;
 }
 
