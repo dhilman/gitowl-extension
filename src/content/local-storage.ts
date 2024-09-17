@@ -1,11 +1,13 @@
-import config from "@/config";
+import { CONFIG } from "@/content/config";
 
 class LocalStorage {
   static drawerWidthKey = "git-owl-drawer-width";
   static drawerIsOpenKey = "git-owl-drawer-is-open";
 
   static getDrawerWidth() {
-    return localStorage.getItem(this.drawerWidthKey) || config.minDrawerWidthPx;
+    return (
+      localStorage.getItem(this.drawerWidthKey) || CONFIG.MIN_DRAWER_WIDTH_PX
+    );
   }
 
   static setDrawerWidth(width: string) {

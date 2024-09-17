@@ -22,7 +22,7 @@ const GITHUB_IGNORE_PATHS = [
 
 function github() {
   const path = location.pathname;
-  if (GITHUB_IGNORE_PATHS.some(path.startsWith)) return "";
+  if (GITHUB_IGNORE_PATHS.some((v) => path.startsWith(v))) return "";
   return path;
 }
 

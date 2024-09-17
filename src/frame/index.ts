@@ -1,12 +1,12 @@
-import config from "@/config";
-
 console.log("frame script");
+
+const baseUrl = import.meta.env.VITE_BASE_URL;
 
 function getGitOwlUrl() {
   const params = new URLSearchParams(window.location.search);
   const encoded = params.get("path");
-  if (!encoded) return config.baseUrl + "/";
-  return config.baseUrl + atob(encoded);
+  if (!encoded) return baseUrl + "/";
+  return baseUrl + atob(encoded);
 }
 
 // Inject the iframe

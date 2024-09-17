@@ -1,4 +1,4 @@
-import config from "@/config";
+import { CONFIG } from "@/content/config";
 import LocalStorage from "@/content/local-storage";
 import { getCurrentPath } from "@/content/path-finder";
 import { useCallback, useState } from "preact/hooks";
@@ -13,7 +13,7 @@ export default function Drawer() {
 
   const handleDrag = useCallback((e: MouseEvent) => {
     const width = document.body.clientWidth - e.clientX;
-    if (width < config.minDrawerWidth) return;
+    if (width < CONFIG.MIN_DRAWER_WIDTH) return;
     setWidth(width + "px");
   }, []);
 
