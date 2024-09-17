@@ -30,7 +30,7 @@ function useDrawerWidth() {
   });
 
   useEffect(() => {
-    LocalStorage.setDrawerWidth(width + "px");
+    LocalStorage.setDrawerWidth(width);
   }, [width]);
 
   const handleDrag = useCallback((e: MouseEvent) => {
