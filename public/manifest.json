@@ -23,7 +23,7 @@
 
   "web_accessible_resources": [
     {
-      "resources": ["src/frame/index.js"],
+      "resources": ["src/frame/index.html", "src/frame/index.js"],
       "matches": [
         "https://example.com/*",
         "https://github.com/*",

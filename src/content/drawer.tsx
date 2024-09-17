@@ -1,50 +1,66 @@
+import config from "@/config";
+import LocalStorage from "@/content/local-storage";
+import { getCurrentPath } from "@/content/path-finder";
+import { useCallback, useState } from "preact/hooks";
+
 export default function Drawer() {
+  const [width, setWidth] = useState(() => {
+    return LocalStorage.getDrawerWidth();
+  });
+  const [isOpen, setIsOpen] = useState(() => {
+    return LocalStorage.getDrawerIsOpen();
+  });
+
+  const handleDrag = useCallback((e: MouseEvent) => {
+    const width = document.body.clientWidth - e.clientX;
+    if (width < config.minDrawerWidth) return;
+    setWidth(width + "px");
+  }, []);
+
   return (
     <div
-      style={{
-        position: "fixed",
-        zIndex: 80,
-        top: 0,
-        right: 0,
-        backgroundColor: "red",
-        width: "20vw",
-        minWidth: "300px",
-        height: "100%",
-
-        margin: 0,
-        padding: 0,
-        borderRadius: 0,
-      }}
+      className={`owl-drawer ${
+        isOpen ? "owl-translate-x-0" : "owl-translate-x-full"
+      }`}
+      style={{ width }}
     >
+      <div
+        className="owl-draggable-wall"
+        onMouseDown={() => {
+          console.log("drawer wall mouse down");
+          const prevUserSelect = document.body.style.userSelect;
+          document.body.style.userSelect = "none";
+          document.addEventListener("mousemove", handleDrag);
+          document.addEventListener("mouseup", () => {
+            console.log("drawer wall mouse up");
+            document.body.style.userSelect = prevUserSelect;
+            document.removeEventListener("mousemove", handleDrag);
+          });
+        }}
+      />
       <button
-        style={{
-          position: "fixed",
-          zIndex: 80 /* github hover cards are 100 */,
-          top: "20%",
-
-          padding: "4px 14px",
-
-          backgroundColor: "white",
-          color: "black",
-          fontWeight: 500,
-          fontSize: 16,
-          lineHeight: 1.5,
-          fontFamily: "inherit",
-
-          borderBottom: "none",
-          borderRight: "2px solid rgb(0, 0, 0, 0.1)",
-          borderLeft: "2px solid rgb(0, 0, 0, 0.1)",
-          borderTop: "2px solid rgb(0, 0, 0, 0.1)",
-          borderTopRightRadius: 12,
-          borderTopLeftRadius: 12,
-
-          transition: "all 0.3s ease-in-out",
-          transformOrigin: "bottom right",
-          transform: "translateX(-100%) rotate(-90deg)",
+        className="owl-button"
+        onClick={() => {
+          setIsOpen(!isOpen);
+          LocalStorage.setDrawerIsOpen(!isOpen);
         }}
       >
-        Hello World
+        GitOwl
       </button>
+      <GitOwlIframe />
     </div>
   );
+}
+
+const frameScriptSrc = chrome.runtime.getURL("src/frame/index.html");
+
+function GitOwlIframe() {
+  const path = getCurrentPath();
+  // TODO: add query param to path
+  const pathWithQuery = `${path}?closed=false`;
+  const b64 = btoa(pathWithQuery);
+  return <div>Path: {pathWithQuery}</div>;
+  // return (
+  //   <iframe src={frameScriptSrc + "?path=" + b64} className="owl-iframe" />
+  // );
 }
