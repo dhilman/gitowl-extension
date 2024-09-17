@@ -3,6 +3,7 @@ import { resolve } from "path";
 import { defineConfig } from "vite";
 import cssInjectedByJs from "vite-plugin-css-injected-by-js";
 import packageJson from "./package.json";
+import makeManifest from "./scripts/make-manifest";
 
 const src = resolve(__dirname, "src");
 const outDir = resolve(__dirname, "dist");
@@ -17,6 +18,7 @@ export default defineConfig({
     },
   },
   plugins: [
+    makeManifest(),
     preact(),
     cssInjectedByJs({
       jsAssetsFilterFunction: (chunk) => {

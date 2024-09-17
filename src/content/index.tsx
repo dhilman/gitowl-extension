@@ -2,8 +2,6 @@ import Drawer from "@/content/drawer";
 import { render } from "preact";
 import "./styles.css";
 
-console.log("frame script");
-
 function setup() {
   const appFrame = getOrCreateAppFrame();
 

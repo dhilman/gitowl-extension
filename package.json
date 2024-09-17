@@ -1,8 +1,9 @@
 {
   "name": "gitowl-extension",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
+  "homepage": "https://gitowl.dev",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
