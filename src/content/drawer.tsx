@@ -48,6 +48,9 @@ export default function Drawer() {
         onClick={() => {
           setIsOpen(!isOpen);
           LocalStorage.setDrawerIsOpen(!isOpen);
+          if (!isOpen) {
+            chrome.runtime.sendMessage("gitowl-open");
+          }
         }}
       >
         GitOwl
