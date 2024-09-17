@@ -1,6 +1,6 @@
 import { CONFIG } from "@/content/config";
 
-class LocalStorage {
+export class LocalStorage {
   static drawerWidthKey = "git-owl-drawer-width";
   static drawerIsOpenKey = "git-owl-drawer-is-open";
 
@@ -22,5 +22,3 @@ class LocalStorage {
     localStorage.setItem(this.drawerIsOpenKey, isOpen.toString());
   }
 }
-
-export default LocalStorage;

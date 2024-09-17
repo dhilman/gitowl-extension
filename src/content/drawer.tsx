@@ -1,6 +1,6 @@
 import { CONFIG } from "@/content/config";
-import LocalStorage from "@/content/local-storage";
-import { getCurrentPath } from "@/content/path-finder";
+import { GitOwlIframe } from "@/content/gitowl-iframe";
+import { LocalStorage } from "@/content/local-storage";
 import { useCallback, useState } from "preact/hooks";
 
 export default function Drawer() {
@@ -15,6 +15,7 @@ export default function Drawer() {
     const width = document.body.clientWidth - e.clientX;
     if (width < CONFIG.MIN_DRAWER_WIDTH) return;
     setWidth(width + "px");
+    LocalStorage.setDrawerWidth(width + "px");
   }, []);
 
   return (
@@ -31,11 +32,15 @@ export default function Drawer() {
           const prevUserSelect = document.body.style.userSelect;
           document.body.style.userSelect = "none";
           document.addEventListener("mousemove", handleDrag);
-          document.addEventListener("mouseup", () => {
-            console.log("drawer wall mouse up");
-            document.body.style.userSelect = prevUserSelect;
-            document.removeEventListener("mousemove", handleDrag);
-          });
+          document.addEventListener(
+            "mouseup",
+            () => {
+              console.log("drawer wall mouse up");
+              document.body.style.userSelect = prevUserSelect;
+              document.removeEventListener("mousemove", handleDrag);
+            },
+            { once: true }
+          );
         }}
       />
       <button
@@ -50,17 +55,4 @@ export default function Drawer() {
       <GitOwlIframe />
     </div>
   );
-}
-
-const frameScriptSrc = chrome.runtime.getURL("src/frame/index.html");
-
-function GitOwlIframe() {
-  const path = getCurrentPath();
-  // TODO: add query param to path
-  const pathWithQuery = `${path}?closed=false`;
-  const b64 = btoa(pathWithQuery);
-  return <div>Path: {pathWithQuery}</div>;
-  // return (
-  //   <iframe src={frameScriptSrc + "?path=" + b64} className="owl-iframe" />
-  // );
 }
