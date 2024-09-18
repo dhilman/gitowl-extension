@@ -1,22 +1,28 @@
 {
-  "name": "webpack",
-  "version": "0.1",
-  "description": "",
+  "name": "gitowl-extension",
+  "version": "0.2.0",
   "private": true,
+  "type": "module",
+  "homepage": "https://gitowl.dev",
   "scripts": {
-    "build": "webpack"
+    "dev": "vite",
+    "build:watch": "NODE_ENV=development vite build --watch",
+    "build": "vite build",
+    "build:firefox": "BROWSER=firefox vite build"
   },
-  "keywords": [],
-  "author": "",
-  "license": "",
+  "dependencies": {
+    "preact": "^10.22.1"
+  },
   "devDependencies": {
-    "@types/chrome": "^0.0.212",
-    "copy-webpack-plugin": "^11.0.0",
-    "css-loader": "^6.7.3",
-    "style-loader": "^3.3.1",
-    "ts-loader": "^9.4.2",
-    "typescript": "^4.9.5",
-    "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.1"
+    "@preact/preset-vite": "^2.9.0",
+    "@types/chrome": "^0.0.271",
+    "@types/node": "^22.5.5",
+    "eslint": "^8.57.1",
+    "eslint-config-preact": "^1.4.0",
+    "typescript": "^5.6.2",
+    "vite": "^5.3.3"
+  },
+  "eslintConfig": {
+    "extends": "preact"
   }
 }
