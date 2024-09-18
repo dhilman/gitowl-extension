@@ -59,13 +59,19 @@ $ pnpm install
 $ pnpm dev
 ```
 
-The extension preview will be available at `http://localhost:5173`. Alternatively, it can also be loaded as an unpacked extension in Chrome (see below).
+The extension preview will be available at `http://localhost:5173`. Alternatively, it can also be loaded as an unpacked extension (see below).
 
-### Load the extension (Chrome)
+### Loading the extension (Chrome)
+
+```shell
+# Builds the extension and watches for changes
+$ pnpm build:watch
+```
 
 - Open the Extension Management page by navigating to `chrome://extensions`.
 - Enable Developer Mode by clicking the toggle switch next to Developer mode.
-- Click the LOAD UNPACKED button and select the `dist` directory.
+- Click the `LOAD UNPACKED` button and select the `dist` directory.
+- Note: there is no automatic reloading, so you will need to manually reload the extension to see changes.
 
 
 ## Build & Pack

@@ -21,16 +21,22 @@ export function useDrawerIsOpen() {
 
 const MIN_DRAWER_WIDTH = 300;
 
-export function useDrawerSizeV2() {
-  const [width, setWidth] = useState<number>(MIN_DRAWER_WIDTH);
-  const [buttonTopPercentage, setButtonTopPercentage] = useState<number>(10);
+export function useDrawerSize() {
+  const [width, setWidth] = useState(() => {
+    return LocalStorage.getDrawerWidth();
+  });
+  const [buttonTopPct, setButtonTopPct] = useState(() => {
+    return LocalStorage.getDrawerBtnTop();
+  });
   const [isDragging, setIsDragging] = useState<boolean>(false);
 
   // Refs to store mutable variables without causing re-renders
-  const initialWidthRef = useRef<number>(width);
-  const initialTopRef = useRef<number>(buttonTopPercentage);
-  const startXRef = useRef<number>(0);
-  const startYRef = useRef<number>(0);
+  const initialWidthRef = useRef(width);
+  const initialTopRef = useRef(buttonTopPct);
+  const startXRef = useRef(0);
+  const startYRef = useRef(0);
+  const currWidthRef = useRef(width);
+  const currTopRef = useRef(buttonTopPct);
   const restoreUserSelectFuncRef = useRef<(() => void) | null>(null);
 
   const onDragMove = useCallback((e: MouseEvent) => {
@@ -39,45 +45,46 @@ export function useDrawerSizeV2() {
 
     if (newWidth > MIN_DRAWER_WIDTH) {
       setWidth(newWidth);
+      currWidthRef.current = newWidth;
     }
 
     const deltaY = startYRef.current - e.clientY;
-    const deltaYPercentage = (deltaY / document.body.clientHeight) * 100;
-    const newTopPercentage = initialTopRef.current - deltaYPercentage;
+    const deltaYPercentage = (deltaY / window.innerHeight) * 100;
+    const newTopPct = initialTopRef.current - deltaYPercentage;
+    log("new top %", newTopPct);
 
-    log("newTopPercentage", newTopPercentage);
-
-    if (newTopPercentage > 0 && newTopPercentage < 85) {
-      setButtonTopPercentage(newTopPercentage);
+    if (newTopPct > 0 && newTopPct < 85) {
+      setButtonTopPct(newTopPct);
+      currTopRef.current = newTopPct;
     }
   }, []);
 
   const onDragEnd = useCallback(() => {
     setIsDragging(false);
     restoreUserSelectFuncRef.current?.();
+    LocalStorage.setDrawerWidth(currWidthRef.current);
+    LocalStorage.setDrawerBtnTop(currTopRef.current);
   }, [onDragMove]);
 
   const onDragStart = useCallback(
     (e: MouseEvent) => {
-      log("Drawer drag ended");
-
-      // Disable pointer events for the body and the iframe
-      const prevUserSelect = document.body.style.userSelect;
+      // Disable pointer events for the body and the iframe while dragging
+      const prevPointerEvent = document.body.style.pointerEvents;
       const iframe = getGitOwlIframe();
-      document.body.style.userSelect = "none";
+      document.body.style.pointerEvents = "none";
       iframe.style.pointerEvents = "none";
       restoreUserSelectFuncRef.current = () => {
-        document.body.style.userSelect = prevUserSelect;
+        document.body.style.pointerEvents = prevPointerEvent;
         iframe.style.pointerEvents = "auto";
       };
 
       // Initialize refs with current state
       initialWidthRef.current = width;
-      initialTopRef.current = buttonTopPercentage;
+      initialTopRef.current = buttonTopPct;
       startXRef.current = e.clientX;
       startYRef.current = e.clientY;
     },
-    [onDragMove, width, buttonTopPercentage]
+    [onDragMove, width, buttonTopPct]
   );
 
   const { onMouseDown } = useDraggable({
@@ -86,7 +93,7 @@ export function useDrawerSizeV2() {
     onDragEnd,
   });
 
-  return { width, buttonTopPercentage, onMouseDown, isDragging };
+  return { width, buttonTopPercentage: buttonTopPct, onMouseDown, isDragging };
 }
 
 function getGitOwlIframe() {

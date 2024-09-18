@@ -1,4 +1,0 @@
-export const CONFIG = {
-  MIN_DRAWER_WIDTH: 300,
-  DEFAULT_DRAWER_WIDTH: "400px",
-};

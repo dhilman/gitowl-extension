@@ -5,7 +5,7 @@
   right: 0;
   height: 100%;
   background-color: #f9fafb;
-  box-shadow: rgb(0 0 0 / 64%) 0px 10px 20px;
+  box-shadow: rgb(0 0 0 / 25%) 0px 5px 10px;
 
   transition: transform 0.3s ease-in-out;
 
@@ -18,12 +18,24 @@
     Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
 }
 
-/* Button */
-.owl-button {
+.owl-btn-container {
   position: fixed;
-  z-index: 80; /* github hover cards are 100 */
-  top: 10%;
+  /* github hover cards are z-index: 100 */
+  z-index: 80;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  transform: translateX(-100%);
+  overflow: hidden;
 
+  border: 1.5px solid rgb(0, 0, 0, 0.04);
+  border-right: none;
+  border-radius: 8px 0px 0px 8px;
+}
+
+.owl-btn {
   writing-mode: vertical-rl;
 
   padding: 14px 4px;
@@ -37,62 +49,58 @@
   background-color: white;
   border: none;
 
-  /* border-bottom: none;
-  border-right: 2px solid rgb(0, 0, 0, 0.05);
-  border-left: 2px solid rgb(0, 0, 0, 0.05);
-  border-top: 2px solid rgb(0, 0, 0, 0.05);
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px; */
-
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
-  /* transform-origin: bottom right; */
-  /* transform: translateX(-200%) rotate(180deg); */
   transform: rotate(180deg);
 }
 
-.owl-button:hover {
-  background-color: #1f2937;
-  color: white;
+.owl-btn:hover {
+  background-color: #f4f4f4;
+}
+
+.owl-btn:active,
+.owl-btn:focus {
+  outline: none;
+}
+
+.owl-drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: static;
+  padding: 6px 0px;
+  cursor: grab;
+  border-top: 1px solid rgb(0, 0, 0, 0.05);
+  color: rgb(0, 0, 0, 0.2);
+}
+
+.owl-drag-handle:hover {
+  color: rgb(0, 0, 0, 0.4);
 }
 
 @media (prefers-color-scheme: dark) {
-  .owl-button {
+  .owl-btn-container {
+    border: 1.5px solid rgb(255, 255, 255, 0.04);
+    background-color: #1f2937;
+  }
+
+  .owl-btn {
     background-color: #1f2937;
     color: white;
   }
 
-  .owl-button:hover {
+  .owl-btn:hover {
     background-color: white;
     color: #1f2937;
   }
-}
 
-.owl-button:active,
-.owl-button:focus {
-  outline: none;
-}
+  .owl-drag-handle {
+    color: rgb(255, 255, 255, 0.2);
+    border-top: 1px solid rgb(255, 255, 255, 0.05);
+  }
 
-/* Draggable wall */
-.owl-draggable-wall {
-  position: fixed;
-  z-index: 90;
-  top: 0;
-  width: 2px;
-  height: 100%;
-  opacity: 0.5;
-  background-color: gray;
-  cursor: ew-resize;
-  transition: padding 0.3s ease-in-out;
-}
-
-.owl-draggable-wall:hover {
-  padding-right: 4px;
-}
-
-.owl-draggable-wall:active {
-  width: 100%;
-  opacity: 0.01;
-  transition: none;
+  .owl-drag-handle:hover {
+    color: rgb(255, 255, 255, 0.4);
+  }
 }
 
 /* Iframe */

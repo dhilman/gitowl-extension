@@ -1,8 +1,8 @@
-import { useDrawerIsOpen, useDrawerSizeV2 } from "@/content/drawer-hooks";
+import { useDrawerIsOpen, useDrawerSize } from "@/content/drawer-hooks";
 import { GitOwlIframe } from "@/content/gitowl-iframe";
 
 export default function Drawer() {
-  const { width, buttonTopPercentage, onMouseDown } = useDrawerSizeV2();
+  const { width, buttonTopPercentage, onMouseDown } = useDrawerSize();
   const { isOpen, onToggleOpen } = useDrawerIsOpen();
 
   return (
@@ -13,24 +13,11 @@ export default function Drawer() {
       style={{ width: width + "px" }}
     >
       <div
-        style={{
-          position: "fixed",
-          zIndex: 80,
-          top: `${buttonTopPercentage}%`,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "white",
-          color: "black",
-          transform: "translateX(-100%)",
-          // border only on the left side
-          borderRadius: "8px 0px 0px 8px",
-          overflow: "hidden",
-        }}
+        className="owl-btn-container"
+        style={{ top: `${buttonTopPercentage}%` }}
       >
         <button
-          className="owl-button"
+          className="owl-btn"
           style={{
             position: "static",
           }}
@@ -51,19 +38,7 @@ interface DragHandleProps {
 
 function DragHandle({ onMouseDown }: DragHandleProps) {
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        position: "static",
-        padding: "6px 0px",
-        cursor: "grab",
-        borderTop: "1px solid rgb(0, 0, 0, 0.05)",
-        color: "rgb(0, 0, 0, 0.2)",
-      }}
-      onMouseDown={onMouseDown}
-    >
+    <div className="owl-drag-handle" onMouseDown={onMouseDown}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="16"
