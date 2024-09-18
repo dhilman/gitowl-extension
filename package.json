@@ -5,7 +5,8 @@
   "type": "module",
   "homepage": "https://gitowl.dev",
   "scripts": {
-    "dev": "NODE_ENV=development vite build --watch",
+    "dev": "vite",
+    "build:watch": "NODE_ENV=development vite build --watch",
     "build": "vite build",
     "build:firefox": "BROWSER=firefox vite build"
   },

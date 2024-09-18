@@ -49,11 +49,17 @@ The extension currently works on:
 
 ## Development
 
-Run the build script in watch mode with the following command:
-
+1. Install dependencies
 ```shell
-$ npm run dev
+$ pnpm install
 ```
+
+2. Run the dev script
+```shell
+$ pnpm dev
+```
+
+The extension preview will be available at `http://localhost:5173`. Alternatively, it can also be loaded as an unpacked extension in Chrome (see below).
 
 ### Load the extension (Chrome)
 

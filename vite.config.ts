@@ -30,6 +30,9 @@ export default defineConfig({
       input: {
         content: resolve(src, "content", "index.tsx"),
         frame: resolve(src, "frame", "index.html"),
+        ...(process.env.NODE_ENV === "development" && {
+          index: resolve(__dirname, "index.html"),
+        }),
       },
       output: {
         entryFileNames: (chunk) => `src/${chunk.name}/index.js`,

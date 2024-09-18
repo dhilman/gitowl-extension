@@ -36,7 +36,16 @@ function useIframeSrc() {
   return source;
 }
 
-const FRAME_SRC = chrome.runtime.getURL("src/frame/index.html");
+function getFrameBaseSrc() {
+  if (import.meta.env.DEV) {
+    if (window.location.host.startsWith("localhost")) {
+      return window.location.origin + "/src/frame/index.html";
+    }
+  }
+  return chrome.runtime.getURL("src/frame/index.html");
+}
+
+const FRAME_SRC = getFrameBaseSrc();
 const VERSION = import.meta.env.VITE_GITOWL_VERSION;
 
 function createIframeSrcWithQuery(path: string) {
