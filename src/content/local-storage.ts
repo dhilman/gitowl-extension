@@ -6,7 +6,7 @@ export class LocalStorage {
 
   static getDrawerWidth() {
     return (
-      localStorage.getItem(this.drawerWidthKey) || CONFIG.MIN_DRAWER_WIDTH_PX
+      localStorage.getItem(this.drawerWidthKey) || CONFIG.DEFAULT_DRAWER_WIDTH
     );
   }
 
