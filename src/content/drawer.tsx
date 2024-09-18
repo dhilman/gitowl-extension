@@ -1,11 +1,8 @@
-import { CONFIG } from "@/content/config";
+import { useDrawerIsOpen, useDrawerSizeV2 } from "@/content/drawer-hooks";
 import { GitOwlIframe } from "@/content/gitowl-iframe";
-import { LocalStorage } from "@/content/local-storage";
-import { log } from "@/content/log";
-import { useCallback, useEffect, useState } from "preact/hooks";
 
 export default function Drawer() {
-  const { width, onMouseDown } = useDrawerWidth();
+  const { width, buttonTopPercentage, onMouseDown } = useDrawerSizeV2();
   const { isOpen, onToggleOpen } = useDrawerIsOpen();
 
   return (
@@ -13,65 +10,81 @@ export default function Drawer() {
       className={`owl-drawer ${
         isOpen ? "owl-translate-x-0" : "owl-translate-x-full"
       }`}
-      style={{ width }}
+      style={{ width: width + "px" }}
     >
-      <div className="owl-draggable-wall" onMouseDown={onMouseDown} />
-      <button className="owl-button" onClick={onToggleOpen}>
-        GitOwl
-      </button>
+      <div
+        style={{
+          position: "fixed",
+          zIndex: 80,
+          top: `${buttonTopPercentage}%`,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "white",
+          color: "black",
+          transform: "translateX(-100%)",
+          // border only on the left side
+          borderRadius: "8px 0px 0px 8px",
+          overflow: "hidden",
+        }}
+      >
+        <button
+          className="owl-button"
+          style={{
+            position: "static",
+          }}
+          onClick={onToggleOpen}
+        >
+          GitOwl
+        </button>
+        {isOpen && <DragHandle onMouseDown={onMouseDown} />}
+      </div>
       <GitOwlIframe />
     </div>
   );
 }
 
-function useDrawerWidth() {
-  const [width, setWidth] = useState(() => {
-    return LocalStorage.getDrawerWidth();
-  });
-
-  useEffect(() => {
-    LocalStorage.setDrawerWidth(width);
-  }, [width]);
-
-  const handleDrag = useCallback((e: MouseEvent) => {
-    const width = document.body.clientWidth - e.clientX;
-    if (width < CONFIG.MIN_DRAWER_WIDTH) return;
-    setWidth(width + "px");
-  }, []);
-
-  const onMouseDown = useCallback(() => {
-    const prevUserSelect = document.body.style.userSelect;
-    document.body.style.userSelect = "none";
-    document.addEventListener("mousemove", handleDrag);
-    document.addEventListener(
-      "mouseup",
-      () => {
-        log("drawer wall mouse up");
-        document.body.style.userSelect = prevUserSelect;
-        document.removeEventListener("mousemove", handleDrag);
-      },
-      { once: true }
-    );
-  }, [handleDrag]);
-
-  return { width, onMouseDown };
+interface DragHandleProps {
+  onMouseDown: (e: MouseEvent) => void;
 }
 
-function useDrawerIsOpen() {
-  const [isOpen, setIsOpen] = useState(() => {
-    return LocalStorage.getDrawerIsOpen();
-  });
-
-  const onToggleOpen = () => {
-    setIsOpen(!isOpen);
-    LocalStorage.setDrawerIsOpen(!isOpen);
-    if (!isOpen) {
-      const iframe = document.getElementById(
-        "gitowl-iframe"
-      ) as HTMLIFrameElement;
-      iframe?.contentWindow?.postMessage("gitowl-open", "*");
-    }
-  };
-
-  return { isOpen, onToggleOpen };
+function DragHandle({ onMouseDown }: DragHandleProps) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        position: "static",
+        padding: "6px 0px",
+        cursor: "grab",
+        borderTop: "1px solid rgb(0, 0, 0, 0.05)",
+        color: "rgb(0, 0, 0, 0.2)",
+      }}
+      onMouseDown={onMouseDown}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="5" r="1" />
+        <circle cx="19" cy="5" r="1" />
+        <circle cx="5" cy="5" r="1" />
+        <circle cx="12" cy="12" r="1" />
+        <circle cx="19" cy="12" r="1" />
+        <circle cx="5" cy="12" r="1" />
+        <circle cx="12" cy="19" r="1" />
+        <circle cx="19" cy="19" r="1" />
+        <circle cx="5" cy="19" r="1" />
+      </svg>
+    </div>
+  );
 }

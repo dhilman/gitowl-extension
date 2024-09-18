@@ -24,7 +24,9 @@
   z-index: 80; /* github hover cards are 100 */
   top: 10%;
 
-  padding: 4px 14px;
+  writing-mode: vertical-rl;
+
+  padding: 14px 4px;
 
   color: black;
   font-weight: 500;
@@ -33,17 +35,19 @@
   font-family: inherit;
 
   background-color: white;
+  border: none;
 
-  border-bottom: none;
+  /* border-bottom: none;
   border-right: 2px solid rgb(0, 0, 0, 0.05);
   border-left: 2px solid rgb(0, 0, 0, 0.05);
   border-top: 2px solid rgb(0, 0, 0, 0.05);
   border-top-right-radius: 12px;
-  border-top-left-radius: 12px;
+  border-bottom-right-radius: 12px; */
 
-  transition: all 0.3s ease-in-out;
-  transform-origin: bottom right;
-  transform: translateX(-100%) rotate(-90deg);
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  /* transform-origin: bottom right; */
+  /* transform: translateX(-200%) rotate(180deg); */
+  transform: rotate(180deg);
 }
 
 .owl-button:hover {
