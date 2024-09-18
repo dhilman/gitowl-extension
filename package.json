@@ -5,9 +5,9 @@
   "type": "module",
   "homepage": "https://gitowl.dev",
   "scripts": {
-    "dev": "vite",
+    "dev": "NODE_ENV=development vite build --watch",
     "build": "vite build",
-    "watch": "NODE_ENV=development vite build --watch"
+    "build:firefox": "BROWSER=firefox vite build"
   },
   "dependencies": {
     "preact": "^10.22.1"

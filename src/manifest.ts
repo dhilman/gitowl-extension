@@ -1,5 +1,7 @@
 import packageJson from "../package.json";
 
+const isFirefox = process.env.BROWSER === "firefox";
+
 export default {
   manifest_version: 3,
   version: packageJson.version,
@@ -37,4 +39,14 @@ export default {
       ],
     },
   ],
+
+  ...(isFirefox
+    ? {
+        browser_specific_settings: {
+          gecko: {
+            id: "gitowl@gitowl.dev",
+          },
+        },
+      }
+    : {}),
 } satisfies chrome.runtime.ManifestV3;

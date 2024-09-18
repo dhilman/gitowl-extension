@@ -49,17 +49,23 @@ The extension currently works on:
 
 ## Development
 
-To run the extension locally
-
-### Build the extension
+Run the build script in watch mode with the following command:
 
 ```shell
-$ npm install
-$ npm run build
+$ npm run dev
 ```
 
-### Load the extension
+### Load the extension (Chrome)
 
 - Open the Extension Management page by navigating to `chrome://extensions`.
 - Enable Developer Mode by clicking the toggle switch next to Developer mode.
 - Click the LOAD UNPACKED button and select the `dist` directory.
+
+
+## Build & Pack
+
+The build script simply bundles the extension and zips the contents of the `dist` directory.
+
+```shell
+$ ./scripts/build.sh
+```
