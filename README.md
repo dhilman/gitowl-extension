@@ -53,12 +53,12 @@ The extension currently works on:
 
 1. Install dependencies
 ```shell
-$ pnpm install
+$ npm install
 ```
 
 2. Run the dev script
 ```shell
-$ pnpm dev
+$ npm run dev
 ```
 
 The extension preview will be available at `http://localhost:5173`. Alternatively, it can also be loaded as an unpacked extension (see below).
@@ -67,7 +67,7 @@ The extension preview will be available at `http://localhost:5173`. Alternativel
 
 ```shell
 # Builds the extension and watches for changes
-$ pnpm build:watch
+$ npm run build:watch
 ```
 
 - Open the Extension Management page by navigating to `chrome://extensions`.
