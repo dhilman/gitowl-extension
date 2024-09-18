@@ -7,6 +7,8 @@
   <b><a href="https://gitowl.dev">gitowl.dev</a></b>
   <span> • </span>
   <b><a href="https://chrome.google.com/webstore/detail/gitowl/gijnkijpbdlefjnobncjfongkbpoohdb">chrome</a></b>
+  <span> • </span>
+  <b><a href="https://addons.mozilla.org/en-US/firefox/addon/gitowl/">firefox</a></b>
 </h3>
 
 ![Screenshot](./screenshots/main.png)
@@ -79,5 +81,5 @@ $ pnpm build:watch
 The build script simply bundles the extension and zips the contents of the `dist` directory.
 
 ```shell
-$ ./scripts/build.sh
+$ ./scripts/create-pkg.sh
 ```

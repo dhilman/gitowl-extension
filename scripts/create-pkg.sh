@@ -6,5 +6,5 @@ rm -rf dist-pkg
 mkdir dist-pkg
 
 cd dist
-zip -r ../dist-pkg/gitowl.zip ./*
+zip -r ../dist-pkg/gitowl.zip .
 cd ..
