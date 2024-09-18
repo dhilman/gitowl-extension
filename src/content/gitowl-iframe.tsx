@@ -4,7 +4,7 @@ import { useEffect, useState } from "preact/hooks";
 
 export function GitOwlIframe() {
   const source = useIframeSrc();
-  return <iframe src={source} className="owl-iframe" />;
+  return <iframe id="gitowl-iframe" src={source} className="owl-iframe" />;
 }
 
 const current = {
@@ -41,7 +41,11 @@ const VERSION = import.meta.env.VITE_GITOWL_VERSION;
 
 function createIframeSrcWithQuery(path: string) {
   const isClosed = !LocalStorage.getDrawerIsOpen();
-  const pathWithQuery = `${path}?closed=${isClosed}&version=${VERSION}`;
-  const b64 = btoa(pathWithQuery);
+  path += "?";
+  path += "version=" + VERSION;
+  if (isClosed) {
+    path += "&closed=true";
+  }
+  const b64 = btoa(path);
   return FRAME_SRC + "?path=" + b64;
 }

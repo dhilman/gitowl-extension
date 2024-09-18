@@ -27,8 +27,8 @@ document.body.appendChild(iframe);
 // Navigation within the iframe doesn't result in update of the iframe src, thus
 // once the iframe has been opened, will not update the src again, to avoid
 // resetting the iframe to its initial URL.
-chrome.runtime.onMessage.addListener((message) => {
-  if (message === "gitowl-open") {
+window.addEventListener("message", (event) => {
+  if (event.data === "gitowl-open") {
     log("message received opening");
     const url = new URL(iframe.src);
     if (!url.searchParams.has("closed")) {
@@ -39,3 +39,5 @@ chrome.runtime.onMessage.addListener((message) => {
     return;
   }
 });
+
+log("frame script loaded");

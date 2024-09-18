@@ -66,7 +66,10 @@ function useDrawerIsOpen() {
     setIsOpen(!isOpen);
     LocalStorage.setDrawerIsOpen(!isOpen);
     if (!isOpen) {
-      chrome.runtime.sendMessage("gitowl-open");
+      const iframe = document.getElementById(
+        "gitowl-iframe"
+      ) as HTMLIFrameElement;
+      iframe?.contentWindow?.postMessage("gitowl-open", "*");
     }
   };
 
