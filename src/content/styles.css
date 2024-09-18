@@ -1,19 +1,27 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+}
+
+button:focus,
+button:active {
+  outline: none;
+}
+
 .owl-drawer {
   position: fixed;
   z-index: 80;
   top: 0;
   right: 0;
   height: 100%;
+  max-width: 90vw;
+
   background-color: #f9fafb;
   box-shadow: rgb(0 0 0 / 25%) 0px 5px 10px;
 
   transition: transform 0.3s ease-in-out;
-
-  max-width: 90vw;
-  margin: 0;
-  padding: 0;
-  border-radius: 0;
-
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
     Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
 }
@@ -57,17 +65,12 @@
   background-color: #f4f4f4;
 }
 
-.owl-btn:active,
-.owl-btn:focus {
-  outline: none;
-}
-
 .owl-drag-handle {
   display: flex;
   align-items: center;
   justify-content: center;
   position: static;
-  padding: 6px 0px;
+  padding: 6px 4px;
   cursor: grab;
   border-top: 1px solid rgb(0, 0, 0, 0.05);
   color: rgb(0, 0, 0, 0.2);
@@ -107,9 +110,6 @@
 .owl-iframe {
   width: 100%;
   height: 100%;
-  margin: 0;
-  padding: 0;
-  border: none;
 }
 
 /* Transform Classes */
