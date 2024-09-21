@@ -13,41 +13,30 @@
 
 ![Screenshot](./screenshots/main.png)
 
-This repository contains the source code for the GitOwl browser extension.
+GitOwl browser extension adds a sidebar to GitHub, NPM & PyPI with contextual insights.
 
-The extension aims to interact as little as possible with the websites on which it is run.
+The extension code itself is kept to a minimum, to maintain privacy and ease of review.
+The insights are provided by the `gitowl.dev` iframe, which is embedded in the sidebar and doesn't have access to the content of the page.
 
-The extension functionality is limited to:
-- Creating a drawer component for the GitOwl iframe
-- Controlling the drawer state (width & open/closed)
-- Identifying the entity (user/repository) being viewed
-- Instantiating the GitOwl iframe
+The extension is only responsible for:
+- Controlling the sidebar state
+- Identifying the entity being viewed
+- Instantiating the iframe
+- Passing the entity name to the iframe
 
-The extension currently works on:
-- GitHub
-- NPM
-- PyPI
+## Architecture
 
-## Details
+Extension consists of the [content script](./src/content/index.tsx) and the [frame](./src/frame/index.html) page.
 
-### Framing
+Content script:
+- runs in the context of the page
+- creates & controls the sidebar
+- identifies the entity being viewed
+- instantiates frame.html as an iframe
+- posts messages to iframe if the entity changes
 
-- GitOwl iframe (`I2`) is created inside another iframe (`I1`) to avoid cross-origin issues.
-- Content script identifies the entity being viewed and passes it as the `path` query parameter to `I1`.
-- Content script updates the `src` attribute of `I1` on URL changes.
-- Content script sends messages to `I1` on drawer opening.
-
-
-### Content Script & Drawer
-
-- Content script creates the following components:
-  - Drawer
-  - Drawer toggle button
-  - IFrame (`I1`)
-  - Drawer draggable handle
-- Open/Closed state and width of the drawer are stored in local storage.
-- Content script listens to changes in URL and updates the `src` attribute of `I1` accordingly.
-
+The frame page simply contains the iframe to `gitowl.dev` and relays messages from the content script.
+This frame is needed to prevent issues with embedding iframe with a different origin.
 
 ## Development
 

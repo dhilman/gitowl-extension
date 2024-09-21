@@ -37,6 +37,7 @@ button:active {
   background-color: white;
   transform: translateX(-100%);
   overflow: hidden;
+  min-width: fit-content;
 
   border: 1.5px solid rgb(0, 0, 0, 0.04);
   border-right: none;
@@ -46,7 +47,7 @@ button:active {
 .owl-btn {
   writing-mode: vertical-rl;
 
-  padding: 14px 4px;
+  padding: 16px 4px;
 
   color: black;
   font-weight: 500;
@@ -92,8 +93,8 @@ button:active {
   }
 
   .owl-btn:hover {
-    background-color: white;
-    color: #1f2937;
+    background-color: #374151;
+    color: white;
   }
 
   .owl-drag-handle {

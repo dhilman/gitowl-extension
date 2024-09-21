@@ -8,7 +8,6 @@ const env = {
   BROWSER: process.env.BROWSER,
   NODE: process.env.NODE_ENV,
   VERSION: packageJson.version,
-  VITE_BASE_URL: process.env.VITE_BASE_URL,
 };
 console.log("ENV", env);
 
