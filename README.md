@@ -70,5 +70,5 @@ $ npm run build:watch
 The build script simply bundles the extension and zips the contents of the `dist` directory.
 
 ```shell
-$ ./scripts/create-pkg.sh
+$ ./scripts/create-release.sh
 ```
