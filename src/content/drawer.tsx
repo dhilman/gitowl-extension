@@ -1,5 +1,5 @@
+import { IFRAME_INITIAL_SRC } from "@/content/app-state";
 import { useDrawerIsOpen, useDrawerSize } from "@/content/drawer-hooks";
-import { GitOwlIframe } from "@/content/gitowl-iframe";
 
 export default function Drawer() {
   const { width, buttonTopPercentage, onMouseDown } = useDrawerSize();
@@ -27,9 +27,20 @@ export default function Drawer() {
         </button>
         {isOpen && <DragHandle onMouseDown={onMouseDown} />}
       </div>
-      <GitOwlIframe />
+      <iframe
+        id="gitowl-iframe"
+        src={IFRAME_INITIAL_SRC}
+        className="owl-iframe"
+      />
     </div>
   );
+}
+
+let _iframe: HTMLIFrameElement | null = null;
+export function getExtensionIframe() {
+  if (_iframe) return _iframe;
+  _iframe = document.getElementById("gitowl-iframe") as HTMLIFrameElement;
+  return _iframe;
 }
 
 interface DragHandleProps {

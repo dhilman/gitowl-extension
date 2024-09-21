@@ -23,20 +23,14 @@ iframe.style.margin = "0";
 
 document.body.appendChild(iframe);
 
-// Listen to messages from the main script, remove `closed` query param on open.
-// Navigation within the iframe doesn't result in update of the iframe src, thus
-// once the iframe has been opened, will not update the src again, to avoid
-// resetting the iframe to its initial URL.
+// Listen to messages from the main script and relay to the inner iframe.
 window.addEventListener("message", (event) => {
-  if (event.data === "gitowl-open") {
-    log("message received opening");
-    const url = new URL(iframe.src);
-    if (!url.searchParams.has("closed")) {
-      return;
-    }
-    url.searchParams.delete("closed");
-    iframe.src = url.toString();
-    return;
+  if (
+    typeof event.data === "object" &&
+    "type" in event.data &&
+    event.data.type === "gitowl"
+  ) {
+    iframe.contentWindow?.postMessage(event.data, "*");
   }
 });
 

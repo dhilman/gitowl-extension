@@ -1,3 +1,4 @@
+import { syncAppState } from "@/content/app-state";
 import { LocalStorage } from "@/content/local-storage";
 import { log } from "@/content/log";
 import { useCallback, useRef, useState } from "preact/hooks";
@@ -10,10 +11,7 @@ export function useDrawerIsOpen() {
   const onToggleOpen = () => {
     setIsOpen(!isOpen);
     LocalStorage.setDrawerIsOpen(!isOpen);
-    if (!isOpen) {
-      const iframe = getGitOwlIframe();
-      iframe?.contentWindow?.postMessage("gitowl-open", "*");
-    }
+    syncAppState();
   };
 
   return { isOpen, onToggleOpen };

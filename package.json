@@ -1,12 +1,12 @@
 {
   "name": "gitowl-extension",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": true,
   "type": "module",
   "homepage": "https://gitowl.dev",
   "scripts": {
     "dev": "vite",
-    "build:watch": "NODE_ENV=development vite build --watch",
+    "build:watch": "NODE_ENV=development vite build --mode development --watch",
     "build": "vite build",
     "build:firefox": "BROWSER=firefox vite build"
   },

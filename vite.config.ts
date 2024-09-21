@@ -1,21 +1,13 @@
 import preact from "@preact/preset-vite";
 import { resolve } from "path";
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv, UserConfig } from "vite";
 import packageJson from "./package.json";
 import makeManifest from "./scripts/make-manifest";
-
-const env = {
-  BROWSER: process.env.BROWSER,
-  NODE: process.env.NODE_ENV,
-  VERSION: packageJson.version,
-  VITE_BASE_URL: process.env.VITE_BASE_URL,
-};
-console.log("ENV", env);
 
 const src = resolve(__dirname, "src");
 const outDir = resolve(__dirname, "dist");
 
-export default defineConfig({
+const userConfig: UserConfig = {
   define: {
     "import.meta.env.VITE_GITOWL_VERSION": JSON.stringify(packageJson.version),
   },
@@ -40,4 +32,16 @@ export default defineConfig({
       },
     },
   },
+};
+
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, __dirname, "");
+  console.log("ENV", {
+    MODE: mode,
+    NODE_ENV: env.NODE_ENV,
+    BROWSER: env.BROWSER,
+    VERSION: packageJson.version,
+    VITE_BASE_URL: env.VITE_BASE_URL,
+  });
+  return userConfig;
 });
