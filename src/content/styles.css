@@ -37,8 +37,8 @@ button:active {
   background-color: white;
   transform: translateX(-100%);
   overflow: hidden;
-  min-width: fit-content;
 
+  width: 32px;
   border: 1.5px solid rgb(0, 0, 0, 0.04);
   border-right: none;
   border-radius: 8px 0px 0px 8px;

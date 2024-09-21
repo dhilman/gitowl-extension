@@ -28,7 +28,13 @@ const GITHUB_IGNORE_PATHS = [
 function github() {
   const path = location.pathname;
   if (GITHUB_IGNORE_PATHS.some((v) => path.startsWith(v))) return "";
-  return path;
+
+  // Only return the /owner[/repo] part of the path
+  // /owner -> /owner
+  // /owner/repo -> /owner/repo
+  // /owner/repo/pulls -> /owner/repo
+  // /owner/repo/issues/123 -> /owner/repo
+  return path.split("/").slice(0, 3).join("/");
 }
 
 function npmjs() {
