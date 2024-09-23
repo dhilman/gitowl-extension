@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+const BASE_URL = import.meta.env.VITE_BASE_URL + "/git";
 
 function log(...args: any[]) {
   if (import.meta.env.DEV) {

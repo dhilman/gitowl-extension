@@ -1,6 +1,8 @@
 import packageJson from "../package.json";
 
-const isFirefox = process.env.BROWSER === "firefox";
+const browser = process.env.BROWSER ?? "chrome";
+const isFirefox = browser === "firefox";
+const isChrome = browser === "chrome";
 
 export default {
   manifest_version: 3,
@@ -39,6 +41,14 @@ export default {
       ],
     },
   ],
+
+  ...(isChrome
+    ? {
+        background: {
+          service_worker: "src/worker/index.js",
+        },
+      }
+    : {}),
 
   ...(isFirefox
     ? {

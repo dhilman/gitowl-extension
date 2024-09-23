@@ -23,6 +23,7 @@ const userConfig: UserConfig = {
       input: {
         content: resolve(src, "content", "index.tsx"),
         frame: resolve(src, "frame", "index.html"),
+        worker: resolve(src, "worker", "index.ts"),
         ...(process.env.NODE_ENV === "development" && {
           index: resolve(__dirname, "index.html"),
         }),
