@@ -3,6 +3,7 @@ import packageJson from "../package.json";
 const browser = process.env.BROWSER ?? "chrome";
 const isFirefox = browser === "firefox";
 const isChrome = browser === "chrome";
+const isProd = process.env.NODE_ENV === "production";
 
 export default {
   manifest_version: 3,
@@ -18,6 +19,8 @@ export default {
     "48": "favicon@48x48.png",
     "128": "favicon@128x128.png",
   },
+
+  permissions: ["storage"],
 
   content_scripts: [
     {
@@ -44,6 +47,16 @@ export default {
 
   ...(isChrome
     ? {
+        externally_connectable: {
+          matches: isProd
+            ? ["https://gitowl.dev/*"]
+            : [
+                "http://localhost:*/*",
+                "https://gitowl.dev/*",
+                "https://*.gitowl.dev/*",
+              ],
+        },
+
         background: {
           service_worker: "src/worker/index.js",
         },

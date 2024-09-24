@@ -7,7 +7,7 @@ const outDir = resolve(__dirname, "..", "public");
 export default function makeManifest() {
   return {
     name: "make-manifest",
-    buildEnd() {
+    buildStart() {
       if (!fs.existsSync(outDir)) {
         fs.mkdirSync(outDir);
       }

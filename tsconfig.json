@@ -1,26 +1,35 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "types": ["vite/client", "node", "chrome"],
+    /* Basic Options */
+    "target": "es2020",
+    "module": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
+    "jsx": "preserve",
+    "jsxFactory": "h",
+    "jsxFragmentFactory": "Fragment",
+
+    /* Type Checking */
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* Module Resolution */
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+
+    /* Interoperability */
     "allowJs": false,
     "skipLibCheck": false,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
     "noEmit": true,
-    "jsx": "preserve",
-    "jsxFactory": "h",
-    "jsxFragmentFactory": "Fragment",
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+
+    /* Types */
+    "types": ["vite/client", "node", "chrome"]
   },
   "include": ["src", "scripts", "vite.config.ts"]
 }

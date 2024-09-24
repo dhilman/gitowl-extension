@@ -6,22 +6,35 @@ function log(...args: any[]) {
   }
 }
 
-function getGitOwlUrl() {
+function getGitOwlUrl(token?: string) {
   const params = new URLSearchParams(window.location.search);
   const encoded = params.get("path");
-  if (!encoded) return BASE_URL + "/";
-  return BASE_URL + atob(encoded);
+  let url = BASE_URL;
+  if (encoded) {
+    url += atob(encoded);
+  }
+  if (token) {
+    url += `#${token}`;
+  }
+  return url;
 }
 
-// Inject the iframe
 const iframe = document.createElement("iframe");
 iframe.src = getGitOwlUrl();
 iframe.style.width = "100%";
 iframe.style.minHeight = "100vh";
 iframe.style.border = "none";
 iframe.style.margin = "0";
-
 document.body.appendChild(iframe);
+
+// Update the iframe URL with auth token from storage (if it exists)
+chrome?.storage?.local?.get("token", (result) => {
+  const token = result.token;
+  if (!token) return;
+  iframe.src = getGitOwlUrl(token);
+
+  log("Iframe URL changed:", iframe.src);
+});
 
 // Listen to messages from the main script and relay to the inner iframe.
 window.addEventListener("message", (event) => {
@@ -30,7 +43,7 @@ window.addEventListener("message", (event) => {
     "type" in event.data &&
     event.data.type === "gitowl"
   ) {
-    iframe.contentWindow?.postMessage(event.data, "*");
+    iframe?.contentWindow?.postMessage(event.data, "*");
   }
 });
 

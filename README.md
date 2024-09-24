@@ -23,20 +23,30 @@ The extension is only responsible for:
 - Identifying the entity being viewed
 - Instantiating the iframe
 - Passing the entity name to the iframe
+- Storing authentication token
 
 ## Architecture
 
-Extension consists of the [content script](./src/content/index.tsx) and the [frame](./src/frame/index.html) page.
+Extension consists of the [content script](./src/content/index.tsx), the [frame](./src/frame/index.html) page and the [worker](./src/worker/index.ts).
 
-Content script:
+### Content Script
+
 - runs in the context of the page
 - creates & controls the sidebar
 - identifies the entity being viewed
 - instantiates frame.html as an iframe
 - posts messages to iframe if the entity changes
 
-The frame page simply contains the iframe to `gitowl.dev` and relays messages from the content script.
-This frame is needed to prevent issues with embedding iframe with a different origin.
+### Frame Page
+
+The frame page contains the `gitowl.dev` iframe, it is needed to prevent issues with embedding iframe with a different origin.
+
+- Relays messages from the content script to `gitowl.dev` (URL changes)
+- Attaches authentication token to the `gitowl.dev` URL
+
+### Worker (chromium only)
+
+Listens for messages from `gitowl.dev` and stores the authentication token.
 
 ## Development
 
